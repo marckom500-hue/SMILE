@@ -1,7 +1,8 @@
+import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
-// --- Icônes SVG inline (légères, pas besoin de librairie) ---
+// --- Icônes SVG inline ---
 const icons = {
   dashboard: (
     <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
@@ -63,20 +64,29 @@ const navGroups = [
   },
 ]
 
-// --- Styles ---
-const s = {
+// --- Styles RESPONSIVE ---
+const getStyles = (isMobile) => ({
   sidebar: {
-    width: 220,
+    width: isMobile ? '100%' : 220,
     background: 'var(--bg-primary)',
-    borderRight: '0.5px solid var(--border)',
+    borderRight: isMobile ? 'none' : '0.5px solid var(--border)',
+    borderTop: isMobile ? '0.5px solid var(--border)' : 'none',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: isMobile ? 'row' : 'column',
     flexShrink: 0,
-    minHeight: '100vh',
+    minHeight: isMobile ? 'auto' : '100vh',
+    position: isMobile ? 'fixed' : 'relative',
+    bottom: isMobile ? 0 : 'auto',
+    left: isMobile ? 0 : 'auto',
+    right: isMobile ? 0 : 'auto',
+    height: isMobile ? '60px' : 'auto',
+    overflowX: isMobile ? 'auto' : 'visible',
+    zIndex: 100,
   },
   logo: {
-    padding: '20px 18px 16px',
-    borderBottom: '0.5px solid var(--border)',
+    padding: isMobile ? '0' : '20px 18px 16px',
+    borderBottom: isMobile ? 'none' : '0.5px solid var(--border)',
+    display: isMobile ? 'none' : 'block',
   },
   logoIcon: {
     width: 32, height: 32,
@@ -85,21 +95,34 @@ const s = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     marginBottom: 8,
   },
-  nav: { flex: 1, padding: '12px 10px' },
+  nav: {
+    flex: isMobile ? 'none' : 1,
+    padding: isMobile ? '0 10px' : '12px 10px',
+    display: 'flex',
+    flexDirection: isMobile ? 'row' : 'column',
+    gap: isMobile ? 8 : 0,
+    overflowX: isMobile ? 'auto' : 'visible',
+  },
   groupTitle: {
     fontSize: 10, fontWeight: 500, letterSpacing: '0.08em',
     color: 'var(--text-tertiary)', padding: '10px 8px 4px',
     textTransform: 'uppercase',
+    display: isMobile ? 'none' : 'block',
   },
-  navItem: (active) => ({
+  navItem: (active, isMobile) => ({
     display: 'flex', alignItems: 'center', gap: 9,
-    padding: '8px 10px', borderRadius: 7,
-    fontSize: 13, cursor: 'pointer', marginBottom: 1,
+    padding: isMobile ? '6px 8px' : '8px 10px',
+    borderRadius: 7,
+    fontSize: isMobile ? 11 : 13,
+    cursor: 'pointer',
+    marginBottom: isMobile ? 0 : 1,
     textDecoration: 'none',
-    color:      active ? 'var(--teal-dark)'  : 'var(--text-secondary)',
+    color: active ? 'var(--teal-dark)' : 'var(--text-secondary)',
     background: active ? 'var(--teal-light)' : 'transparent',
     fontWeight: active ? 500 : 400,
     transition: 'all 0.15s',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   }),
   badge: (color = 'var(--teal)') => ({
     marginLeft: 'auto', fontSize: 10,
@@ -108,7 +131,9 @@ const s = {
   }),
   footer: {
     padding: 14,
-    borderTop: '0.5px solid var(--border)',
+    borderTop: isMobile ? 'none' : '0.5px solid var(--border)',
+    borderLeft: isMobile ? '0.5px solid var(--border)' : 'none',
+    display: isMobile ? 'none' : 'block',
   },
   userCard: { display: 'flex', alignItems: 'center', gap: 9 },
   avatar: {
@@ -117,15 +142,24 @@ const s = {
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontSize: 12, fontWeight: 600, color: 'white', flexShrink: 0,
   },
-}
+})
 
 function Sidebar() {
   const location = useLocation()
   const { logout, user } = useAuth()
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const s = getStyles(isMobile)
 
   return (
     <aside style={s.sidebar}>
-      {/* Logo */}
+      {/* Logo - Caché sur mobile */}
       <div style={s.logo}>
         <div style={s.logoIcon}>
           <img 
@@ -145,17 +179,17 @@ function Sidebar() {
       {/* Navigation */}
       <nav style={s.nav}>
         {navGroups.map((group, gi) => (
-          <div key={gi} style={{ marginTop: gi > 0 ? 8 : 0 }}>
+          <div key={gi} style={{ marginTop: gi > 0 && !isMobile ? 8 : 0 }}>
             <div style={s.groupTitle}>{group.title}</div>
             {group.items.map((item) => {
               const active = location.pathname === item.to
               return (
-                <NavLink key={item.to} to={item.to} style={s.navItem(active)}>
+                <NavLink key={item.to} to={item.to} style={s.navItem(active, isMobile)}>
                   <span style={{ opacity: active ? 1 : 0.7, display: 'flex' }}>
                     {icons[item.icon]}
                   </span>
-                  {item.label}
-                  {item.badge && (
+                  {!isMobile && item.label}
+                  {item.badge && !isMobile && (
                     <span style={s.badge(item.badgeColor)}>{item.badge}</span>
                   )}
                 </NavLink>
@@ -165,7 +199,7 @@ function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer utilisateur */}
+      {/* Footer utilisateur - Caché sur mobile */}
       <div style={s.footer}>
         <div style={s.userCard}>
           <div style={s.avatar}>DB</div>
