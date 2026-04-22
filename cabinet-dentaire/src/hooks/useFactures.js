@@ -36,23 +36,5 @@ export function useFactures() {
   const totalAttente = factures.filter(f => f.statut === 'En attente').reduce((s, f) => s + f.montant, 0)
   const nbImpayees   = factures.filter(f => f.statut === 'En attente').length
 
-  async function ajouterFacture(facture) {
-    const { data, error } = await supabase.from('factures').insert([facture]).select(`*, patients(nom, prenom)`)
-    if (!error) setFactures(prev => [data[0], ...prev])
-    return { data, error }
-  }
-
-  async function modifierFacture(id, champs) {
-    const { data, error } = await supabase.from('factures').update(champs).eq('id', id).select(`*, patients(nom, prenom)`)
-    if (!error) setFactures(prev => prev.map(f => f.id === id ? data[0] : f))
-    return { data, error }
-  }
-
-  async function supprimerFacture(id) {
-    const { error } = await supabase.from('factures').delete().eq('id', id)
-    if (!error) setFactures(prev => prev.filter(f => f.id !== id))
-    return { error }
-  }
-
-  return { factures, loading, erreur, charger, modifierStatut, ajouterFacture, modifierFacture, supprimerFacture, totalPaye, totalAttente, nbImpayees }
+  return { factures, loading, erreur, charger, modifierStatut, totalPaye, totalAttente, nbImpayees }
 }

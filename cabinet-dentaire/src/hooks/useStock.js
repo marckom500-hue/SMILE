@@ -40,17 +40,5 @@ export function useStock() {
     return { data, error }
   }
 
-  async function modifierArticle(id, champs) {
-    const { data, error } = await supabase.from('stock').update(champs).eq('id', id).select()
-    if (!error) setStock(prev => prev.map(s => s.id === id ? data[0] : s))
-    return { data, error }
-  }
-
-  async function supprimerArticle(id) {
-    const { error } = await supabase.from('stock').delete().eq('id', id)
-    if (!error) setStock(prev => prev.filter(s => s.id !== id))
-    return { error }
-  }
-
-  return { stock, loading, erreur, charger, mettreAJourQuantite, ajouterArticle, modifierArticle, supprimerArticle }
+  return { stock, loading, erreur, charger, mettreAJourQuantite, ajouterArticle }
 }

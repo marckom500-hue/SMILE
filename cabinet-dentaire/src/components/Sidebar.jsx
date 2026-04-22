@@ -133,7 +133,7 @@ function Sidebar() {
           </svg>
         </div>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-          CABINET DENTAIRE SMILE
+          DentaCare Pro
         </div>
         <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
           Dr. Boutchouang & Associés
