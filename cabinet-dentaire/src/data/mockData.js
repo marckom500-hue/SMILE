@@ -85,30 +85,27 @@
 // ]
 // src/data/mockData.js
 
+// src/data/mockData.js
+
 export const mockKPIs = [
-  { id: 'patients', color: 'teal', label: 'Patients ce mois', value: '148', trend: '+12% vs mois dernier', trendType: 'up' },
-  { id: 'rdv', color: 'blue', label: "RDV aujourd'hui", value: '12', trend: '8 confirmés · 4 en attente', trendType: 'neutral' },
-  { id: 'ca', color: 'amber', label: "Chiffre d'affaires", value: '840k', trend: '+8% ce mois · FCFA', trendType: 'up' },
-  { id: 'urgences', color: 'rose', label: 'Actes urgents', value: '3', trend: 'Nécessite attention', trendType: 'down' },
+  { id: 'patients', color: 'teal', label: 'Patients ce mois', value: '148', trend: '+12%', trendType: 'up' },
+  { id: 'rdv', color: 'blue', label: "RDV aujourd'hui", value: '12', trend: '8 confirmés', trendType: 'neutral' },
+  { id: 'ca', color: 'amber', label: "Chiffre d'affaires", value: '840k', trend: '+8%', trendType: 'up' },
+  { id: 'urgences', color: 'rose', label: 'Actes urgents', value: '3', trend: 'Attention', trendType: 'down' },
 ];
 
 export const mockAppointments = [
-  { id: 1, heure: '08:00', patient: 'Marie Nkana', type: 'Détartrage · 45 min', statut: 'confirme', couleur: '#0d9488' },
-  { id: 2, heure: '09:00', patient: 'Paul Essomba', type: 'Extraction · 1h', statut: 'confirme', couleur: '#3b82f6' },
-  { id: 3, heure: '10:30', patient: 'Aimée Bello', type: 'Consultation · 30 min', statut: 'attente', couleur: '#f59e0b' },
+  { id: 1, heure: '08:00', patient: 'Marie Nkana', type: 'Détartrage', statut: 'confirme', couleur: '#0d9488' },
 ];
 
 export const mockPatients = [
-  { id: 1, nom: 'Marie Nkana', initiales: 'MN', avatarBg: '#ccfbf1', avatarColor: '#0f766e', dernierActe: 'Détartrage', statut: 'Suivi OK' },
-  { id: 2, nom: 'Paul Essomba', initiales: 'PE', avatarBg: '#dbeafe', avatarColor: '#1d4ed8', dernierActe: 'Extraction', statut: 'Post-op' },
+  { id: 1, nom: 'Marie Nkana', initiales: 'MN', avatarBg: '#ccfbf1', avatarColor: '#0f766e', dernierActe: 'Détartrage' },
 ];
 
 export const mockStock = [
-  { id: 1, nom: 'Gants latex (boîtes)', qte: 80, max: 100, couleur: '#0d9488' },
-  { id: 4, nom: 'Anesthésique Lidocaïne', qte: 3, max: 25, couleur: '#f43f5e', alerte: true },
+  { id: 1, nom: 'Gants latex', qte: 80, max: 100, couleur: '#0d9488' },
 ];
 
 export const mockNotifications = [
-  { id: 1, icone: '⚠️', iconeBg: '#fce7f3', texte: 'Stock critique — Anesthésique Lidocaïne bas', temps: 'il y a 2h' },
-  { id: 3, icone: '✅', iconeBg: '#ccfbf1', texte: 'Marie Nkana a confirmé son RDV 08:00', temps: 'il y a 30 min' },
+  { id: 1, icone: '⚠️', iconeBg: '#fce7f3', texte: 'Stock bas', temps: 'il y a 2h' },
 ];
