@@ -1,31 +1,31 @@
-// src/components/Modal.jsx
-function Modal({ titre, onClose, children }) {
+export default function Modal({ isOpen, onClose, title, children }) {
+  if (!isOpen) return null;
+
   return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 1000,
-      background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(2px)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: 16,
-    }}
-      onClick={e => e.target === e.currentTarget && onClose()}
-    >
-      <div style={{
-        background: 'var(--bg-primary)', borderRadius: 16, width: '100%', maxWidth: 520,
-        boxShadow: '0 20px 60px rgba(0,0,0,0.18)', border: '0.5px solid var(--border)',
-        maxHeight: '90vh', display: 'flex', flexDirection: 'column',
-      }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 22px', borderBottom: '0.5px solid var(--border)' }}>
-          <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>{titre}</span>
-          <button onClick={onClose} style={{ width: 28, height: 28, borderRadius: 7, border: '0.5px solid var(--border)', background: 'var(--bg-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: 16 }}>✕</button>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+
+      {/* Panneau — plein écran sur mobile, centré sur tablette+ */}
+      <div className="relative bg-white w-full sm:max-w-lg sm:rounded-xl rounded-t-2xl shadow-xl max-h-[90vh] flex flex-col">
+        {/* Header fixe */}
+        <div className="flex items-center justify-between p-4 md:p-5 border-b border-gray-100 flex-shrink-0">
+          <h3 className="text-base md:text-lg font-semibold text-gray-900">{title}</h3>
+          <button
+            onClick={onClose}
+            className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        {/* Body */}
-        <div style={{ padding: '22px', overflowY: 'auto' }}>
+
+        {/* Contenu scrollable */}
+        <div className="overflow-y-auto flex-1 p-4 md:p-5">
           {children}
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-export default Modal

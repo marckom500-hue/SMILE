@@ -1,49 +1,48 @@
-// pages/Dashboard.jsx
-import Topbar           from '../components/Topbar'
-import KPICard          from '../components/KPICard'
-import AppointmentList  from '../components/AppointmentList'
-import PatientList      from '../components/PatientList'
-import DonutChart       from '../components/DonutChart'
-import Notifications    from '../components/Notifications'
-import RevenueChart     from '../components/RevenueChart'
-import StockList        from '../components/StockList'
-import { kpis }         from '../data/mockData'
+import Topbar from "../components/Topbar";
+import KPICard from "../components/KPICard";
+import AppointmentList from "../components/AppointmentList";
+import PatientList from "../components/PatientList";
+import DonutChart from "../components/DonutChart";
+import Notifications from "../components/Notifications";
+import RevenueChart from "../components/RevenueChart";
+import StockList from "../components/StockList";
+import { mockKPIs, mockAppointments, mockPatients, mockStock, mockNotifications } from "../data/mockData";
 
-function Dashboard() {
+export default function Dashboard() {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      <Topbar title="Tableau de bord" />
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+      <Topbar />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      {/* KPI Cards — 1 col mobile, 2 tablette, 4 desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {mockKPIs.map((kpi) => (
+          <KPICard key={kpi.id} {...kpi} />
+        ))}
+      </div>
 
-        {/* Ligne 1 — KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
-          {kpis.map((kpi) => (
-            <KPICard key={kpi.id} {...kpi} />
-          ))}
+      {/* Rangée principale — 1 col mobile, 2 cols desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        {/* RDV du jour — prend 2/3 sur desktop */}
+        <div className="lg:col-span-2">
+          <AppointmentList appointments={mockAppointments} />
         </div>
-
-        {/* Ligne 2 — RDV (2fr) + colonne droite (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16, marginBottom: 16 }}>
-          <AppointmentList />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <DonutChart />
-            <Notifications />
-          </div>
+        {/* Notifications — 1/3 */}
+        <div>
+          <Notifications notifications={mockNotifications} />
         </div>
+      </div>
 
-        {/* Ligne 3 — Patients (1fr) + Revenus (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-          <PatientList />
-          <RevenueChart />
-        </div>
+      {/* Rangée secondaire — 1 col mobile, 2 cols desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <RevenueChart />
+        <DonutChart />
+      </div>
 
-        {/* Ligne 4 — Stock pleine largeur */}
-        <StockList />
-
+      {/* Rangée basse — 1 col mobile, 2 cols desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <PatientList patients={mockPatients} />
+        <StockList stocks={mockStock} />
       </div>
     </div>
-  )
+  );
 }
-
-export default Dashboard
