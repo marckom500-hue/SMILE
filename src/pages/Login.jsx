@@ -36,7 +36,7 @@ function Login() {
             </svg>
           </div>
           <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 600, color: 'var(--text-primary)' }}>
-            DentaCare Pro
+          Cabinet Dentaire SMILE
           </div>
           <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
             Dr. Boutchouang & Associés
