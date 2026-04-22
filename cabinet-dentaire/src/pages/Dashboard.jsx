@@ -7,39 +7,49 @@ import DonutChart       from '../components/DonutChart'
 import Notifications    from '../components/Notifications'
 import RevenueChart     from '../components/RevenueChart'
 import StockList        from '../components/StockList'
-import { kpis }         from '../data/mockData'
+
+// ✅ On importe les noms EXACTS du fichier mockData.js
+import { 
+  kpis, 
+  rendezVousDuJour, 
+  patientsRecents, 
+  stock, 
+  alertes 
+} from '../data/mockData'
 
 function Dashboard() {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div className="flex flex-col h-screen overflow-hidden">
       <Topbar title="Tableau de bord" />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50">
 
-        {/* Ligne 1 — KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
+        {/* Ligne 1 — KPIs (Responsive : 1 col sur mobile, 2 sur tablette, 4 sur PC) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {kpis.map((kpi) => (
             <KPICard key={kpi.id} {...kpi} />
           ))}
         </div>
 
-        {/* Ligne 2 — RDV (2fr) + colonne droite (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16, marginBottom: 16 }}>
-          <AppointmentList />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* Ligne 2 — RDV + colonne droite (S'empile sur mobile) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="lg:col-span-2">
+            <AppointmentList data={rendezVousDuJour} />
+          </div>
+          <div className="flex flex-col gap-6">
             <DonutChart />
-            <Notifications />
+            <Notifications data={alertes} />
           </div>
         </div>
 
-        {/* Ligne 3 — Patients (1fr) + Revenus (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-          <PatientList />
+        {/* Ligne 3 — Patients + Revenus */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <PatientList data={patientsRecents} />
           <RevenueChart />
         </div>
 
-        {/* Ligne 4 — Stock pleine largeur */}
-        <StockList />
+        {/* Ligne 4 — Stock */}
+        <StockList data={stock} />
 
       </div>
     </div>

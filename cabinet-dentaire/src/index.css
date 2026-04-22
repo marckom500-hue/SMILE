@@ -1,9 +1,12 @@
+/* 1. TOUJOURS LES IMPORTS EN PREMIER */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap');
+
+/* 2. ENSUITE LES DIRECTIVES TAILWIND */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap');
-
+/* 3. ENSUITE VOTRE CONFIGURATION :ROOT */
 :root {
   --teal:       #0d9488;
   --teal-light: #ccfbf1;
@@ -22,6 +25,7 @@
   --border-md: #cbd5e1;
 }
 
+/* 4. LE RESTE DU CSS */
 * {
   box-sizing: border-box;
   margin: 0;
