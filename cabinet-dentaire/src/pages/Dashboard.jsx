@@ -10,11 +10,11 @@ import StockList        from '../components/StockList'
 
 // ✅ On importe les noms EXACTS du fichier mockData.js
 import { 
-  kpis, 
-  rendezVousDuJour, 
-  patientsRecents, 
-  stock, 
-  alertes 
+  mockKPIs, 
+  mockAppointments, 
+  mockPatients, 
+  mockStock, 
+  mockNotifications
 } from '../data/mockData'
 
 function Dashboard() {
