@@ -31,10 +31,12 @@ function Login() {
             display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px',
             boxShadow: '0 8px 24px rgba(13,148,136,0.25)',
           }}>
-              <img src="/SMILE.jpg" alt="Logo" style={{ width: 50, height: 50 }} />
+            <svg viewBox="0 0 24 24" fill="white" width="26" height="26">
+              <path d="M12 2C8.5 2 6 4.5 6 7c0 1.5.7 3.2 1.5 4.5L9 14l1 4h4l1-4 1.5-2.5C17.3 10.2 18 8.5 18 7c0-2.5-2.5-5-6-5z" />
+            </svg>
           </div>
           <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 600, color: 'var(--text-primary)' }}>
-          Cabinet Dentaire SMILE
+            DentaCare Pro
           </div>
           <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
             Dr. Boutchouang & Associés

@@ -1,104 +1,197 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { NavLink, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
-const navItems = [
-  { path: "/", label: "Tableau de bord", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
-  { path: "/rendez-vous", label: "Rendez-vous", icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z", badge: 3 },
-  { path: "/patients", label: "Patients", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
-  { path: "/facturation", label: "Facturation", icon: "M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" },
-  { path: "/stock", label: "Stock", icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" },
-  { path: "/rapports", label: "Rapports", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
-];
+// --- Icônes SVG inline (légères, pas besoin de librairie) ---
+const icons = {
+  dashboard: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+    </svg>
+  ),
+  calendar: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  patients: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+    </svg>
+  ),
+  prescription: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+      <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clipRule="evenodd" />
+    </svg>
+  ),
+  billing: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path fillRule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clipRule="evenodd" />
+    </svg>
+  ),
+  stock: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+      <path fillRule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clipRule="evenodd" />
+    </svg>
+  ),
+  reports: (
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+    </svg>
+  ),
+}
 
-export default function Sidebar({ onClose }) {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
+// --- Données de navigation ---
+const navGroups = [
+  {
+    title: 'Principal',
+    items: [
+      { label: 'Tableau de bord', to: '/',               icon: 'dashboard' },
+      { label: 'Rendez-vous',     to: '/rendez-vous',    icon: 'calendar',  badge: '8' },
+      { label: 'Patients',        to: '/patients',       icon: 'patients' },
+    ],
+  },
+  {
+    title: 'Clinique',
+    items: [
+      { label: 'Ordonnances',    to: '/ordonnances', icon: 'prescription' },
+      { label: 'Facturation',    to: '/facturation', icon: 'billing',  badge: '3', badgeColor: '#f59e0b' },
+      { label: 'Stock & Matériel', to: '/stock',     icon: 'stock' },
+      { label: 'Rapports',       to: '/rapports',    icon: 'reports' },
+    ],
+  },
+]
 
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
+// --- Styles ---
+const s = {
+  sidebar: {
+    width: 220,
+    background: 'var(--bg-primary)',
+    borderRight: '0.5px solid var(--border)',
+    display: 'flex',
+    flexDirection: 'column',
+    flexShrink: 0,
+    minHeight: '100vh',
+  },
+  logo: {
+    padding: '20px 18px 16px',
+    borderBottom: '0.5px solid var(--border)',
+  },
+  logoIcon: {
+    width: 32, height: 32,
+    background: 'var(--teal)',
+    borderRadius: 8,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    marginBottom: 8,
+  },
+  nav: { flex: 1, padding: '12px 10px' },
+  groupTitle: {
+    fontSize: 10, fontWeight: 500, letterSpacing: '0.08em',
+    color: 'var(--text-tertiary)', padding: '10px 8px 4px',
+    textTransform: 'uppercase',
+  },
+  navItem: (active) => ({
+    display: 'flex', alignItems: 'center', gap: 9,
+    padding: '8px 10px', borderRadius: 7,
+    fontSize: 13, cursor: 'pointer', marginBottom: 1,
+    textDecoration: 'none',
+    color:      active ? 'var(--teal-dark)'  : 'var(--text-secondary)',
+    background: active ? 'var(--teal-light)' : 'transparent',
+    fontWeight: active ? 500 : 400,
+    transition: 'all 0.15s',
+  }),
+  badge: (color = 'var(--teal)') => ({
+    marginLeft: 'auto', fontSize: 10,
+    background: color, color: 'white',
+    padding: '1px 6px', borderRadius: 10, fontWeight: 500,
+  }),
+  footer: {
+    padding: 14,
+    borderTop: '0.5px solid var(--border)',
+  },
+  userCard: { display: 'flex', alignItems: 'center', gap: 9 },
+  avatar: {
+    width: 32, height: 32, borderRadius: '50%',
+    background: 'linear-gradient(135deg, var(--teal), var(--teal-dark))',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontSize: 12, fontWeight: 600, color: 'white', flexShrink: 0,
+  },
+}
+
+function Sidebar() {
+  const location = useLocation()
+  const { logout, user } = useAuth()
 
   return (
-    <div className="w-64 h-full bg-white border-r border-gray-200 flex flex-col shadow-lg lg:shadow-none">
-      {/* Header / Logo */}
-      <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-sm font-bold text-gray-900 font-serif leading-tight">SMILE</h1>
-              <p className="text-xs text-teal-600 leading-tight">Dr. Boutchouang & Associés</p>
-            </div>
-          </div>
+    <aside style={s.sidebar}>
+      {/* Logo */}
+      <div style={s.logo}>
+        <div style={s.logoIcon}>
+          <svg viewBox="0 0 24 24" fill="white" width="18" height="18">
+            <path d="M12 2C8.5 2 6 4.5 6 7c0 1.5.7 3.2 1.5 4.5L9 14l1 4h4l1-4 1.5-2.5C17.3 10.2 18 8.5 18 7c0-2.5-2.5-5-6-5z" />
+          </svg>
         </div>
-        {/* Bouton fermer visible uniquement sur mobile */}
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
+          DentaCare Pro
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
+          Dr. Boutchouang & Associés
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === "/"}
-            onClick={onClose}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                isActive
-                  ? "bg-teal-50 text-teal-700"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`
-            }
-          >
-            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
-            </svg>
-            <span>{item.label}</span>
-            {item.badge && (
-              <span className="ml-auto bg-red-100 text-red-600 text-xs font-semibold px-1.5 py-0.5 rounded-full">
-                {item.badge}
-              </span>
-            )}
-          </NavLink>
+      <nav style={s.nav}>
+        {navGroups.map((group, gi) => (
+          <div key={gi} style={{ marginTop: gi > 0 ? 8 : 0 }}>
+            <div style={s.groupTitle}>{group.title}</div>
+            {group.items.map((item) => {
+              const active = location.pathname === item.to
+              return (
+                <NavLink key={item.to} to={item.to} style={s.navItem(active)}>
+                  <span style={{ opacity: active ? 1 : 0.7, display: 'flex' }}>
+                    {icons[item.icon]}
+                  </span>
+                  {item.label}
+                  {item.badge && (
+                    <span style={s.badge(item.badgeColor)}>{item.badge}</span>
+                  )}
+                </NavLink>
+              )
+            })}
+          </div>
         ))}
       </nav>
 
       {/* Footer utilisateur */}
-      <div className="p-3 border-t border-gray-100">
-        <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-            DB
+      <div style={s.footer}>
+        <div style={s.userCard}>
+          <div style={s.avatar}>DB</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Dr. Boutchouang</div>
+            <div style={{ fontSize: 11, color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.email || 'Chirurgien-dentiste'}</div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">Dr. Boutchouang</p>
-            <p className="text-xs text-gray-500 truncate">Administrateur</p>
-          </div>
-          <button
-            onClick={handleLogout}
-            title="Déconnexion"
-            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-          </button>
         </div>
+        <button
+          onClick={logout}
+          style={{
+            marginTop: 10, width: '100%', padding: '7px', borderRadius: 7,
+            border: '0.5px solid var(--border)', background: 'transparent',
+            color: 'var(--text-secondary)', fontSize: 12, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#fce7f3'; e.currentTarget.style.color = '#9d174d'; e.currentTarget.style.borderColor = '#fbcfe8' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--border)' }}
+        >
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+          Déconnexion
+        </button>
       </div>
-    </div>
-  );
+    </aside>
+  )
 }
+
+export default Sidebar
