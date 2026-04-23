@@ -14,7 +14,7 @@ function Rapports() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Topbar title="Rapports" />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      <div className="content-padding main-content" style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
 

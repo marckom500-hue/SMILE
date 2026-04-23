@@ -128,12 +128,10 @@ function Sidebar() {
       {/* Logo */}
       <div style={s.logo}>
         <div style={s.logoIcon}>
-          <svg viewBox="0 0 24 24" fill="white" width="18" height="18">
-            <path d="M12 2C8.5 2 6 4.5 6 7c0 1.5.7 3.2 1.5 4.5L9 14l1 4h4l1-4 1.5-2.5C17.3 10.2 18 8.5 18 7c0-2.5-2.5-5-6-5z" />
-          </svg>
+         <img src="/SMILE.jpg" alt="Logo" style={{ width: 20, height: 20 }} />
         </div>
         <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-          DentaCare Pro
+          Cabinet Dentaire SMILE
         </div>
         <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
           Dr. Boutchouang & Associés

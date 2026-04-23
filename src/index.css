@@ -22,11 +22,7 @@
   --border-md: #cbd5e1;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -38,3 +34,42 @@ body {
 ::-webkit-scrollbar       { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 10px; }
+
+/* ============================================
+   RESPONSIVE — Breakpoints
+   - Mobile  : < 640px
+   - Tablette: 640px – 1024px
+   - Desktop : > 1024px
+============================================ */
+
+/* Sidebar visible uniquement desktop */
+.sidebar-desktop { display: flex; }
+.sidebar-tablet  { display: none; }
+.bottom-nav      { display: none; }
+.mobile-topbar-menu { display: none; }
+
+/* Tablette (640px – 1024px) : sidebar réduite icônes */
+@media (max-width: 1024px) and (min-width: 640px) {
+  .sidebar-desktop { display: none; }
+  .sidebar-tablet  { display: flex; }
+  .kpi-grid-4      { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-2cols      { grid-template-columns: 1fr !important; }
+  .grid-3cols      { grid-template-columns: 1fr !important; }
+  .table-scroll    { overflow-x: auto; }
+}
+
+/* Mobile (< 640px) : bottom navigation */
+@media (max-width: 639px) {
+  .sidebar-desktop { display: none; }
+  .sidebar-tablet  { display: none; }
+  .bottom-nav      { display: flex; }
+  .main-content    { padding-bottom: 70px !important; }
+  .kpi-grid-4      { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-2cols      { grid-template-columns: 1fr !important; }
+  .grid-3cols      { grid-template-columns: 1fr !important; }
+  .topbar-date     { display: none; }
+  .table-scroll    { overflow-x: auto; }
+  .hide-mobile     { display: none !important; }
+  .topbar-title    { font-size: 16px !important; }
+  .content-padding { padding: 14px !important; }
+}

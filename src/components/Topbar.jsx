@@ -77,8 +77,8 @@ function Topbar({ title = 'Tableau de bord' }) {
   return (
     <>
       <div style={s.topbar}>
-        <div style={s.title}>{title}</div>
-        <span style={s.date}>{getDateFr()}</span>
+        <div className="topbar-title" style={s.title}>{title}</div>
+        <span className="topbar-date" style={s.date}>{getDateFr()}</span>
 
         {/* Boutons visibles uniquement sur le dashboard et les autres pages */}
         {!masquerBoutons && (

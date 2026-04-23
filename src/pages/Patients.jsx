@@ -45,7 +45,7 @@ function Patients() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Topbar title="Patients" />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      <div className="content-padding main-content" style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
 
         <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center' }}>
           <div style={{ position: 'relative', flex: 1, maxWidth: 360 }}>
@@ -67,7 +67,7 @@ function Patients() {
         {erreur  && <div style={{ padding: 16, color: '#f43f5e', fontSize: 13, background: '#fce7f3', borderRadius: 10 }}>⚠️ {erreur}</div>}
 
         {!loading && !erreur && (
-          <div style={{ background: 'var(--bg-primary)', border: '0.5px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
+          <div className="table-scroll" style={{ background: 'var(--bg-primary)', border: '0.5px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '2.5fr 1fr 1.5fr 1.5fr 1.5fr 140px', padding: '10px 16px', background: 'var(--bg-secondary)', borderBottom: '0.5px solid var(--border)' }}>
               {['Patient', 'Âge', 'Téléphone', 'Email', 'Adresse', 'Actions'].map(h => (
                 <div key={h} style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</div>

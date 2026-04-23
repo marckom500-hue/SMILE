@@ -1,4 +1,4 @@
-// pages/Dashboard.jsx
+// pages/Dashboard.jsx — Responsive
 import Topbar           from '../components/Topbar'
 import KPICard          from '../components/KPICard'
 import AppointmentList  from '../components/AppointmentList'
@@ -14,17 +14,15 @@ function Dashboard() {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Topbar title="Tableau de bord" />
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      <div className="content-padding" style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
 
-        {/* Ligne 1 — KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
-          {kpis.map((kpi) => (
-            <KPICard key={kpi.id} {...kpi} />
-          ))}
+        {/* Ligne 1 — KPIs : 4 colonnes desktop, 2 tablette/mobile */}
+        <div className="kpi-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
+          {kpis.map((kpi) => <KPICard key={kpi.id} {...kpi} />)}
         </div>
 
-        {/* Ligne 2 — RDV (2fr) + colonne droite (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16, marginBottom: 16 }}>
+        {/* Ligne 2 — RDV + colonne droite */}
+        <div className="grid-3cols" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16, marginBottom: 16 }}>
           <AppointmentList />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <DonutChart />
@@ -32,13 +30,13 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Ligne 3 — Patients (1fr) + Revenus (1fr) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        {/* Ligne 3 — Patients + Revenus */}
+        <div className="grid-2cols" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           <PatientList />
           <RevenueChart />
         </div>
 
-        {/* Ligne 4 — Stock pleine largeur */}
+        {/* Ligne 4 — Stock */}
         <StockList />
 
       </div>

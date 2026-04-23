@@ -21,8 +21,9 @@ function Login() {
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: 'linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%)',
+      padding: '16px',
     }}>
-      <div style={{ width: 380 }}>
+      <div style={{ width: '100%', maxWidth: 380 }}>
 
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>

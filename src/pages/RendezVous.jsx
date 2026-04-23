@@ -47,7 +47,7 @@ function RendezVous() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <Topbar title="Rendez-vous" />
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+      <div className="content-padding main-content" style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
 
         {/* Barre de filtres */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -82,7 +82,7 @@ function RendezVous() {
         {erreur  && <div style={{ padding: 16, color: '#f43f5e', fontSize: 13, background: '#fce7f3', borderRadius: 10 }}>⚠️ {erreur}</div>}
 
         {!loading && !erreur && (
-          <div style={{ background: 'var(--bg-primary)', border: '0.5px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
+          <div className="table-scroll" style={{ background: 'var(--bg-primary)', border: '0.5px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
             {/* En-tête tableau */}
             <div style={{ display: 'grid', gridTemplateColumns: '80px 2fr 1.5fr 1.5fr 80px 1fr 160px', padding: '10px 16px', background: 'var(--bg-secondary)', borderBottom: '0.5px solid var(--border)' }}>
               {['Heure', 'Patient', 'Acte', 'Date', 'Durée', 'Statut', 'Actions'].map(h => (
